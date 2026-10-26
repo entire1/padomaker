@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>파도메이커 블로그</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&family=IBM+Plex+Mono:wght@400&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!--
+  [새 글 쓰는 법]
+  1. posts 폴더의 글 파일 하나를 복사해서 새 이름으로 저장해요. (예: posts/robot.html)
+  2. 새 파일에서 제목, 날짜, 본문을 바꿔요.
+  3. 아래 "글 목록"의 맨 위에 <li> 묶음을 하나 복사해 붙이고, 주소와 제목을 새 글로 바꿔요.
+-->
+
+<div class="page">
+  <div class="top">
+    <a class="logo" href="index.html">
+      <svg viewBox="0 0 44 20" aria-hidden="true"><path d="M2 12 Q8 2 14 12 T26 12 T38 12" fill="none" stroke="var(--accent)" stroke-width="3.5" stroke-linecap="round"/></svg>
+      파도메이커
+    </a>
+    <nav><a href="index.html" aria-current="page">글 목록</a><a href="#about">소개</a></nav>
+  </div>
+
+  <section class="hello">
+    <h1>만들고, 부수고,<br>다시 만든 기록</h1>
+    <p>3D 프린터와 센서로 물건을 만드는 중학생 메이커의 블로그예요. 성공한 것보다 실패한 이야기가 더 많아요.</p>
+  </section>
+
+  <!-- 글 목록: 새 글은 맨 위에 추가해요 -->
+  <section style="display:grid;gap:12px">
+    <span class="label">Posts · 3</span>
+    <ol class="posts">
+      <li>
+        <a href="posts/github-pages.html">
+          <div class="meta"><time datetime="2026-10-20">2026.10.20</time><span class="tag">#웹</span><span>3분</span></div>
+          <h2>내 홈페이지가 인터넷에 올라간 날</h2>
+          <p>깃허브 페이지로 처음 올렸는데 10분 동안 404만 봤다. 범인은 파일 이름이었다.</p>
+        </a>
+      </li>
+      <li>
+        <a href="posts/plant-pot.html">
+          <div class="meta"><time datetime="2026-09-14">2026.09.14</time><span class="tag">#센서</span><span>4분</span></div>
+          <h2>화분이 물에 잠긴 날</h2>
+          <p>자동 물 주기 화분을 만들었더니 물을 멈추지 않았다. 센서 값을 직접 재 보고 기준을 바꿨다.</p>
+        </a>
+      </li>
+      <li>
+        <a href="posts/phone-stand.html">
+          <div class="meta"><time datetime="2026-06-08">2026.06.08</time><span class="tag">#3D프린팅</span><span>5분</span></div>
+          <h2>휴대폰 거치대, 네 번 만에 성공</h2>
+          <p>넘어지고, 부러지고, 갈라졌다. 결국 모양이 아니라 출력 방향이 문제였다.</p>
+        </a>
+      </li>
+    </ol>
+  </section>
+
+  <section id="about" style="display:grid;gap:10px">
+    <span class="label">About</span>
+    <p>바닷가 마을에 사는 중학교 3학년이에요. 3D 프린팅, 레고 테크닉, 로봇을 좋아합니다. 완성 사진은 인스타그램에, 만드는 과정은 이 블로그에 남겨요.</p>
+  </section>
+
+  <footer>© 2026 파도메이커 · 실명, 학교, 얼굴 사진 없이 만든 수업용 예시</footer>
+</div>
+</body>
+</html>

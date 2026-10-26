@@ -1,0 +1,100 @@
+/* =========================================================
+   파도메이커 블로그 디자인 파일
+   모든 페이지가 이 파일 하나를 같이 써요.
+   여기 색을 바꾸면 블로그 전체 색이 한 번에 바뀝니다.
+   ========================================================= */
+
+:root{
+  --bg:#fbfcfc;      /* 배경 */
+  --card:#ffffff;    /* 상자 배경 */
+  --ink:#16201f;     /* 글자 */
+  --muted:#5e6c6a;   /* 흐린 글자 (날짜, 설명) */
+  --line:#dde5e4;    /* 구분선 */
+  --accent:#0d7f81;  /* 강조색 (링크, 제목 표시) */
+  --soft:#e4f2f1;    /* 연한 강조 배경 */
+  --warn:#c2521f;    /* 실패 표시 */
+  --sans:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+/* 어두운 화면(다크 모드)일 때 색 */
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111717; --card:#182120; --ink:#e7eeed; --muted:#9aa9a7; --line:#293534;
+  --accent:#4cc3c3; --soft:#1d3433; --warn:#f08a5d; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111717; --card:#182120; --ink:#e7eeed; --muted:#9aa9a7; --line:#293534;
+  --accent:#4cc3c3; --soft:#1d3433; --warn:#f08a5d; color-scheme:dark}
+
+/* 기본 */
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--sans); font-size:17px; line-height:1.8;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0;
+}
+.page{max-width:680px; margin:0 auto; padding-block:40px 64px; display:grid; gap:48px}
+a{color:var(--accent); text-underline-offset:3px}
+a:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:4px}
+h1,h2,h3,p{margin:0}
+img{max-width:100%}
+
+/* 맨 위 메뉴 */
+.top{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px 16px;
+  padding-bottom:16px; border-bottom:1px solid var(--line)}
+.logo{font-weight:700; color:var(--ink); text-decoration:none; display:flex; align-items:center; gap:8px}
+.logo svg{width:28px; height:auto}
+.top nav{display:flex; gap:16px; font-size:15px}
+.top nav a{color:var(--muted); text-decoration:none}
+.top nav a:hover,.top nav a[aria-current]{color:var(--accent)}
+
+/* 첫 화면: 자기소개 */
+.hello{display:grid; gap:12px}
+.hello h1{font-size:clamp(30px,6vw,40px); line-height:1.25; letter-spacing:-.02em; text-wrap:balance}
+.hello p{color:var(--muted); max-width:36ch}
+
+/* 첫 화면: 글 목록 */
+.label{font-family:var(--mono); font-size:13px; letter-spacing:.1em; text-transform:uppercase; color:var(--accent)}
+.posts{list-style:none; margin:0; padding:0; display:grid}
+.posts li{border-top:1px solid var(--line)}
+.posts li:last-child{border-bottom:1px solid var(--line)}
+.posts a{display:grid; gap:6px; padding-block:22px; text-decoration:none; color:inherit}
+.posts a:hover h2{color:var(--accent)}
+.posts h2{font-size:21px; line-height:1.4; letter-spacing:-.01em}
+.posts p{color:var(--muted); font-size:16px}
+.meta{font-family:var(--mono); font-size:13px; color:var(--muted); display:flex; flex-wrap:wrap; gap:4px 14px;
+  font-variant-numeric:tabular-nums}
+.tag{color:var(--accent)}
+
+/* 글 페이지 */
+.post{display:grid; gap:28px}
+.post header{display:grid; gap:12px}
+.post h1{font-size:clamp(28px,6vw,38px); line-height:1.3; letter-spacing:-.02em; text-wrap:balance}
+.body{display:grid; gap:20px; max-width:65ch}
+.body h2{font-size:22px; margin-top:12px}
+.body ul,.body ol{margin:0; padding-left:1.3em; display:grid; gap:6px}
+.figure{background:var(--soft); border-radius:14px; padding:24px; display:grid; place-items:center; gap:8px}
+.figure svg{width:min(220px,70%); height:auto}
+.figure span{font-size:14px; color:var(--muted)}
+.note{background:var(--card); border:1px solid var(--line); border-left:4px solid var(--accent);
+  border-radius:8px; padding:14px 18px}
+.fail{color:var(--warn); font-weight:600}
+.ok{color:var(--accent); font-weight:600}
+code{font-family:var(--mono); font-size:.9em; background:var(--soft); padding:1px 6px; border-radius:4px}
+
+/* 이전 글 / 다음 글 */
+.pager{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.pager a{border:1px solid var(--line); border-radius:12px; padding:14px 16px; text-decoration:none;
+  color:inherit; display:grid; gap:2px; background:var(--card); min-width:0}
+.pager a:hover{border-color:var(--accent)}
+.pager span{font-size:13px; color:var(--muted)}
+.pager b{font-size:15px; font-weight:600}
+.pager .next{text-align:right; grid-column:2}
+
+footer{font-size:14px; color:var(--muted); border-top:1px solid var(--line); padding-top:20px}
+
+/* 폰 화면 */
+@media (max-width:520px){
+  .page{padding-block:24px 48px; gap:40px}
+  .pager{grid-template-columns:1fr}
+  .pager .next{grid-column:1}
+}
