@@ -1,37 +1,322 @@
----
-layout: default
----
-<!--
-  첫 화면이에요.
-  HTML 버전과 달리, 새 글을 써도 이 파일은 고칠 필요가 없어요.
-  _posts 폴더에 글을 넣으면 아래 목록에 자동으로 나타나요.
--->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>파도메이커 피드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&family=IBM+Plex+Mono:wght@400&display=swap">
+<style>
+/* Layout: 위는 인스타처럼 프로필 + 격자, 누르면 블로그처럼 긴 글 */
+:root{
+  --bg:#fbfcfc; --card:#ffffff; --ink:#16201f; --muted:#5e6c6a; --line:#dde5e4;
+  --accent:#0d7f81; --soft:#e4f2f1; --warn:#c2521f; --sun:#f2c14e; --shade:rgba(10,20,20,.55);
+  --sans:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111717; --card:#182120; --ink:#e7eeed; --muted:#9aa9a7; --line:#293534;
+  --accent:#4cc3c3; --soft:#1d3433; --warn:#f08a5d; --sun:#f2c14e; --shade:rgba(0,0,0,.7); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111717; --card:#182120; --ink:#e7eeed; --muted:#9aa9a7; --line:#293534;
+  --accent:#4cc3c3; --soft:#1d3433; --warn:#f08a5d; --sun:#f2c14e; --shade:rgba(0,0,0,.7); color-scheme:dark}
 
-<section class="hello">
-  <h1>만들고, 부수고,<br>다시 만든 기록</h1>
-  <p>3D 프린터와 센서로 물건을 만드는 중학생 메이커의 블로그예요. 성공한 것보다 실패한 이야기가 더 많아요.</p>
-</section>
+body{background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:16px; line-height:1.7;
+  padding-left:max(16px,env(safe-area-inset-left,0px)); padding-right:max(16px,env(safe-area-inset-right,0px)); padding-block:0}
+main{max-width:760px; margin:0 auto; padding-block:36px 56px; display:grid; gap:28px}
+h1,h2,h3,p{margin:0}
+button{font:inherit; color:inherit}
+:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
 
-<section style="display:grid;gap:12px">
-  <span class="label">Posts · {{ site.posts | size }}</span>
-  <ol class="posts">
-    {% for post in site.posts %}
-    <li>
-      <a href="{{ post.url | relative_url }}">
-        <div class="meta">
-          <time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: "%Y.%m.%d" }}</time>
-          <span class="tag">#{{ post.tag }}</span>
-          <span>{{ post.minutes }}분</span>
-        </div>
-        <h2>{{ post.title }}</h2>
-        <p>{{ post.summary }}</p>
-      </a>
-    </li>
-    {% endfor %}
-  </ol>
-</section>
+/* ---------- 프로필 (인스타 부분) ---------- */
+.profile{display:grid; grid-template-columns:auto minmax(0,1fr); gap:18px 28px; align-items:center}
+.avatar{width:104px; height:104px; border-radius:50%; padding:4px; background:conic-gradient(var(--accent),var(--sun),var(--warn),var(--accent))}
+.avatar svg{width:100%; height:100%; border-radius:50%; background:var(--card); border:3px solid var(--bg); box-sizing:border-box}
+.who{display:grid; gap:10px; min-width:0}
+.who h1{font-size:22px; font-weight:700}
+.stats{display:flex; gap:22px; font-size:15px}
+.stats b{font-weight:700; font-variant-numeric:tabular-nums}
+.bio{font-size:15px}
+.bio span{color:var(--muted)}
 
-<section id="about" style="display:grid;gap:10px">
-  <span class="label">About</span>
-  <p>바닷가 마을에 사는 중학교 3학년이에요. 3D 프린팅, 레고 테크닉, 로봇을 좋아합니다. 완성 사진은 인스타그램에, 만드는 과정은 이 블로그에 남겨요.</p>
-</section>
+/* 하이라이트 = 주제별로 모아 보기 */
+.highlights{display:flex; gap:18px; overflow-x:auto; padding-bottom:4px}
+.hl{display:grid; gap:6px; justify-items:center; background:none; border:0; padding:0; cursor:pointer; flex:none; font-size:13px}
+.hl i{width:62px; height:62px; border-radius:50%; border:1px solid var(--line); background:var(--soft);
+  display:grid; place-items:center; font-style:normal; font-family:var(--mono); font-size:13px; color:var(--accent)}
+.hl[aria-pressed="true"] i{border:2px solid var(--accent); background:var(--card)}
+
+/* 탭: 격자 / 글 */
+.tabs{display:flex; justify-content:center; gap:40px; border-top:1px solid var(--line)}
+.tab{background:none; border:0; border-top:2px solid transparent; margin-top:-1px; padding:12px 0 0;
+  font-family:var(--mono); font-size:13px; letter-spacing:.08em; color:var(--muted); cursor:pointer}
+.tab[aria-selected="true"]{color:var(--ink); border-top-color:var(--ink)}
+
+/* 격자 */
+.grid{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:4px}
+.tile{aspect-ratio:1/1; max-width:100%; border:0; padding:0; cursor:pointer; position:relative; overflow:hidden; display:block; border-radius:2px}
+.tile svg{width:100%; height:100%; display:block}
+.tile .badge{position:absolute; top:8px; right:8px; font-family:var(--mono); font-size:11px;
+  background:var(--card); color:var(--ink); border-radius:4px; padding:1px 6px}
+.tile:hover svg{filter:brightness(.88)}
+
+/* 글 목록 (블로그 부분) */
+.list{list-style:none; margin:0; padding:0}
+.list li{border-bottom:1px solid var(--line)}
+.list button{width:100%; text-align:left; background:none; border:0; padding:18px 0; cursor:pointer;
+  display:grid; grid-template-columns:72px minmax(0,1fr); gap:16px; align-items:center}
+.list .mini{width:72px; height:72px; border-radius:8px; overflow:hidden}
+.list .mini svg{width:100%; height:100%; display:block}
+.list h3{font-size:18px; line-height:1.4}
+.list p{font-size:15px; color:var(--muted)}
+.list button:hover h3{color:var(--accent)}
+.meta{font-family:var(--mono); font-size:12.5px; color:var(--muted); display:flex; flex-wrap:wrap; gap:2px 12px; font-variant-numeric:tabular-nums}
+.meta .tag{color:var(--accent)}
+.empty{color:var(--muted); text-align:center; padding:32px 0}
+
+/* ---------- 게시물 열기 ---------- */
+.overlay{position:fixed; inset:0; background:var(--shade); z-index:20; display:grid; place-items:center; overflow-y:auto;
+  padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.sheet{background:var(--card); border-radius:14px; width:min(920px,100%); max-height:100%; overflow:auto;
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.sheet.long{grid-template-columns:1fr; width:min(700px,100%)}
+.photo svg{width:100%; height:auto; display:block; aspect-ratio:1/1}
+.sheet.long .photo svg{aspect-ratio:16/9}
+.text{padding:22px 24px 26px; display:grid; gap:14px; align-content:start; min-width:0}
+.text h2{font-size:24px; line-height:1.35; letter-spacing:-.01em; text-wrap:balance}
+.caption{font-size:16px}
+.body{display:grid; gap:14px; font-size:16.5px; line-height:1.8}
+.body h3{font-size:19px; margin-top:6px}
+.body ul,.body ol{margin:0; padding-left:1.3em; display:grid; gap:4px}
+.body .fail{color:var(--warn); font-weight:600}
+.body .ok{color:var(--accent); font-weight:600}
+.body .note{background:var(--soft); border-radius:10px; padding:12px 16px}
+.body code{font-family:var(--mono); font-size:.9em; background:var(--soft); padding:1px 6px; border-radius:4px}
+.bar{display:flex; justify-content:space-between; align-items:center; gap:8px; border-top:1px solid var(--line); padding-top:14px}
+.bar button{background:var(--soft); border:0; border-radius:8px; padding:6px 12px; cursor:pointer; font-size:14px}
+.bar button:disabled{opacity:.4; cursor:default}
+.close{position:fixed; top:max(12px,env(safe-area-inset-top,0px)); right:max(12px,env(safe-area-inset-right,0px));
+  width:40px; height:40px; border-radius:50%; border:0; background:var(--card); cursor:pointer; font-size:20px; z-index:21}
+
+footer{font-size:13.5px; color:var(--muted); text-align:center}
+
+@media (max-width:600px){
+  main{padding-block:20px 40px; gap:22px}
+  .profile{grid-template-columns:auto minmax(0,1fr); gap:14px 18px}
+  .avatar{width:80px; height:80px}
+  .bio{grid-column:1 / -1}
+  .stats{gap:14px; font-size:14px}
+  .sheet{grid-template-columns:1fr}
+  .grid{gap:2px}
+}
+</style>
+</head>
+<body>
+<main>
+  <section class="profile">
+    <div class="avatar" aria-hidden="true">
+      <svg viewBox="0 0 120 120">
+        <rect x="30" y="38" width="60" height="50" rx="16" fill="var(--accent)"/>
+        <circle cx="48" cy="62" r="7" fill="#fff"/><circle cx="72" cy="62" r="7" fill="#fff"/>
+        <circle cx="48" cy="62" r="3" fill="#16201f"/><circle cx="72" cy="62" r="3" fill="#16201f"/>
+        <path d="M50 77 Q60 84 70 77" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+        <line x1="60" y1="38" x2="60" y2="25" stroke="var(--accent)" stroke-width="4"/>
+        <circle cx="60" cy="22" r="5" fill="var(--warn)"/>
+      </svg>
+    </div>
+    <div class="who">
+      <h1>padomaker</h1>
+      <div class="stats">
+        <span><b id="countAll">0</b> 게시물</span>
+        <span><b id="countLong">0</b> 제작 기록</span>
+        <span><b>2026</b> 시작</span>
+      </div>
+    </div>
+    <p class="bio"><b>파도메이커</b><br>만들고, 부수고, 다시 만드는 중학생 메이커<br><span>사진은 짧게, 과정은 길게 남겨요</span></p>
+  </section>
+
+  <nav class="highlights" id="highlights" aria-label="주제별 보기"></nav>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" id="tabGrid" aria-selected="true">▦ 피드</button>
+    <button class="tab" role="tab" id="tabList" aria-selected="false">≡ 제작 기록</button>
+  </div>
+
+  <section id="feed" aria-live="polite"></section>
+
+  <footer>© 2026 파도메이커 · 실명, 학교, 얼굴 사진 없이 만든 수업용 예시</footer>
+</main>
+
+<div class="overlay" id="overlay" hidden>
+  <button class="close" id="closeBtn" aria-label="닫기">×</button>
+  <article class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"></article>
+</div>
+
+<script>
+/* =========================================================
+   그림: 사진 대신 쓰는 간단한 그림들이에요.
+   진짜 사진을 쓰려면 이 부분 대신 <img src="사진.jpg">를 쓰면 돼요.
+   ========================================================= */
+const ART = {
+  stand: '<path d="M25 160 H175 L145 85 H100 L75 30 H55 Z" fill="var(--accent)"/>',
+  pot:   '<path d="M60 100 H140 L126 170 H74 Z" fill="var(--warn)"/><path d="M100 100 V50 M100 70 Q78 46 66 60 M100 60 Q124 30 138 46" fill="none" stroke="var(--accent)" stroke-width="9" stroke-linecap="round"/>',
+  web:   '<rect x="30" y="40" width="140" height="110" rx="12" fill="none" stroke="var(--accent)" stroke-width="9"/><path d="M78 80 L60 95 L78 110 M122 80 L140 95 L122 110" fill="none" stroke="var(--accent)" stroke-width="9" stroke-linecap="round"/>',
+  key:   '<circle cx="80" cy="80" r="34" fill="none" stroke="var(--warn)" stroke-width="12"/><path d="M104 104 L160 160 M140 140 L155 125 M150 150 L165 135" stroke="var(--warn)" stroke-width="12" stroke-linecap="round"/>',
+  crane: '<path d="M60 170 V50 H160 M60 50 L95 85 M140 50 V100" fill="none" stroke="var(--ink)" stroke-width="9" stroke-linecap="round"/><rect x="125" y="100" width="30" height="24" fill="var(--sun)"/><rect x="40" y="165" width="60" height="12" fill="var(--warn)"/>',
+  sunset:'<circle cx="100" cy="110" r="38" fill="var(--sun)"/><rect x="0" y="120" width="200" height="80" fill="var(--accent)"/><path d="M20 140 Q40 130 60 140 T100 140 T140 140 T180 140" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round"/>',
+  spag:  '<path d="M40 150 Q60 60 80 130 T120 110 T160 140 M50 120 Q90 40 110 140 T150 90" fill="none" stroke="var(--warn)" stroke-width="6" stroke-linecap="round"/>',
+  sprout:'<path d="M100 170 V100" stroke="var(--accent)" stroke-width="9" stroke-linecap="round"/><path d="M100 110 Q60 100 64 66 Q100 72 100 110 Z M100 100 Q140 86 140 54 Q104 60 100 100 Z" fill="var(--accent)"/><rect x="40" y="165" width="120" height="16" rx="8" fill="var(--warn)"/>',
+  lego:  '<rect x="40" y="90" width="120" height="70" rx="6" fill="var(--sun)"/><g fill="var(--sun)" stroke="var(--ink)" stroke-opacity=".25" stroke-width="3"><rect x="52" y="70" width="24" height="20" rx="4"/><rect x="88" y="70" width="24" height="20" rx="4"/><rect x="124" y="70" width="24" height="20" rx="4"/></g>'
+};
+function art(name, bg){
+  return '<svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'
+       + '<rect width="200" height="200" fill="' + bg + '"/>' + ART[name] + '</svg>';
+}
+
+/* =========================================================
+   게시물 목록 — 새 게시물은 여기 맨 위에 하나 추가하면 끝!
+   long: false → 인스타처럼 사진 + 짧은 캡션
+   long: true  → 블로그처럼 긴 글 (body에 내용)
+   ========================================================= */
+const POSTS = [
+  { date:"2026.10.20", tag:"웹", art:"web", bg:"var(--soft)", long:true, minutes:3,
+    title:"내 홈페이지가 인터넷에 올라간 날",
+    caption:"깃허브 페이지로 처음 올렸는데 10분 동안 404만 봤다. 범인은 파일 이름이었다.",
+    body:`<p>수업 시간에 제미나이와 함께 만든 홈페이지를 깃허브 페이지로 올렸다. 그런데 처음 10분 동안은 404 화면만 봤다.</p>
+      <h3>404의 범인</h3>
+      <p>"막혔을 때 확인할 것" 표를 보니 첫 줄에 답이 있었다. 내 파일 이름이 <code>내홈페이지.html</code>이었다. 웹사이트는 주소로 들어오면 <code>index.html</code>을 먼저 찾는다.</p>
+      <h3>내가 직접 고친 곳</h3>
+      <p>제미나이가 처음 만든 페이지는 보라색 그라데이션에 나 같지 않은 문장이 가득했다. 색을 바다색으로 바꾸고 문장을 전부 다시 썼다. 세어 보니 23군데.</p>
+      <p class="note"><b>배운 점</b> · AI가 만든 첫 결과물은 출발점일 뿐이다.</p>` },
+
+  { date:"2026.10.03", tag:"센서", art:"sprout", bg:"#dcefe3", long:false,
+    title:"새싹 등장", caption:"자동 물 주기 화분에서 드디어 새싹이 났다. 이번엔 홍수 없이!" },
+
+  { date:"2026.09.14", tag:"센서", art:"pot", bg:"#f6e3d6", long:true, minutes:4,
+    title:"화분이 물에 잠긴 날",
+    caption:"자동 물 주기 화분이 물을 멈추지 않았다. 센서 값을 직접 재 보고 기준을 바꿨다.",
+    body:`<p>흙이 마르면 펌프가 물을 주는 장치를 만들었다. 그런데 첫날 밤, 책상이 물바다가 됐다.</p>
+      <h3>무엇이 문제였나</h3>
+      <p>인터넷 예제의 기준값 500을 그대로 썼는데, 내 센서는 흠뻑 젖어도 520이 나왔다. 장치는 흙이 계속 마른 줄 알았다.</p>
+      <h3>직접 재 보기</h3>
+      <ul><li>바짝 마른 흙: 약 <code>780</code></li><li>촉촉한 흙: 약 <code>610</code></li><li>흠뻑 젖은 흙: 약 <code>520</code></li></ul>
+      <p>기준을 <code>700</code>으로 바꾸고, 한 번 물을 준 뒤 30분은 쉬게 했다.</p>
+      <p class="note"><b>배운 점</b> · 남의 숫자를 쓰기 전에 내 환경에서 직접 재 봐야 한다.</p>` },
+
+  { date:"2026.08.21", tag:"일상", art:"sunset", bg:"#fbe7c6", long:false,
+    title:"바다 산책", caption:"방학 마지막 주. 해 지는 거 보면서 다음 작품 구상 중." },
+
+  { date:"2026.07.30", tag:"레고", art:"crane", bg:"#e9ecef", long:false,
+    title:"레고 크레인", caption:"테크닉으로 만든 크레인. 실이 감기는 부분만 3D 프린터로 출력해서 붙였다." },
+
+  { date:"2026.06.08", tag:"3D프린팅", art:"stand", bg:"var(--soft)", long:true, minutes:5,
+    title:"휴대폰 거치대, 네 번 만에 성공",
+    caption:"넘어지고, 부러지고, 갈라졌다. 결국 모양이 아니라 출력 방향이 문제였다.",
+    body:`<p>틴커캐드로 10분 만에 설계했는데 완성까지 2주가 걸렸다.</p>
+      <h3>시도 1 · <span class="fail">출력 중에 넘어짐</span></h3><p>바닥이 좁았다. 바닥 면적을 두 배로.</p>
+      <h3>시도 2 · <span class="fail">목 부분이 뚝</span></h3><p>가장 얇은 곳이 2 mm. 4 mm로 두껍게.</p>
+      <h3>시도 3 · <span class="fail">층 사이가 갈라짐</span></h3><p>힘 받는 방향과 층 쌓이는 방향이 같았다. 눕혀서 출력.</p>
+      <h3>시도 4 · <span class="ok">성공</span></h3><p>채우기 밀도 20% → 30%. 한 달째 매일 사용 중.</p>
+      <p class="note"><b>배운 점</b> · 튼튼함은 모양보다 출력 방향이 더 많이 좌우한다.</p>` },
+
+  { date:"2026.05.11", tag:"3D프린팅", art:"spag", bg:"#f3e6e1", long:false,
+    title:"스파게티 사건", caption:"자고 일어났더니 작품 대신 스파게티가… 첫 레이어가 바닥에 안 붙었던 것." },
+
+  { date:"2026.04.02", tag:"레고", art:"lego", bg:"#fbf1d3", long:false,
+    title:"부품 정리", caption:"레고 부품을 색깔별로 정리했다. 3시간 걸림." },
+
+  { date:"2026.03.15", tag:"3D프린팅", art:"key", bg:"#f6e3d6", long:false,
+    title:"첫 출력", caption:"3D 프린터로 처음 뽑은 열쇠고리. 실이 조금 엉켰지만 첫 작품!" }
+];
+
+/* =========================================================
+   아래는 화면을 그리는 코드예요. 게시물만 추가할 때는 고칠 필요 없어요.
+   ========================================================= */
+const feed = document.getElementById('feed');
+const overlay = document.getElementById('overlay');
+const sheet = document.getElementById('sheet');
+let view = 'grid';      // 'grid' 또는 'list'
+let topic = '전체';      // 하이라이트로 고른 주제
+let shown = [];         // 지금 화면에 보이는 게시물들
+let openIndex = -1;
+
+document.getElementById('countAll').textContent = POSTS.length;
+document.getElementById('countLong').textContent = POSTS.filter(p => p.long).length;
+
+// 하이라이트 동그라미 만들기
+const topics = ['전체', ...new Set(POSTS.map(p => p.tag))];
+const hl = document.getElementById('highlights');
+topics.forEach(t => {
+  const b = document.createElement('button');
+  b.className = 'hl';
+  b.setAttribute('aria-pressed', t === topic);
+  b.innerHTML = '<i>' + (t === '전체' ? 'ALL' : '#') + '</i>' + t;
+  b.onclick = () => { topic = t; hl.querySelectorAll('.hl').forEach(x => x.setAttribute('aria-pressed', x === b)); render(); };
+  hl.appendChild(b);
+});
+
+function meta(p){
+  return '<div class="meta"><span>' + p.date + '</span><span class="tag">#' + p.tag + '</span>'
+       + (p.long ? '<span>' + p.minutes + '분</span>' : '') + '</div>';
+}
+
+function render(){
+  const byTopic = POSTS.filter(p => topic === '전체' || p.tag === topic);
+  if (view === 'grid'){
+    shown = byTopic;
+    feed.innerHTML = '<div class="grid">' + shown.map((p, i) =>
+      '<button class="tile" data-i="' + i + '" aria-label="' + p.title + '">' + art(p.art, p.bg)
+      + (p.long ? '<span class="badge">글</span>' : '') + '</button>').join('') + '</div>';
+  } else {
+    shown = byTopic.filter(p => p.long);
+    feed.innerHTML = shown.length
+      ? '<ol class="list">' + shown.map((p, i) =>
+          '<li><button data-i="' + i + '"><span class="mini">' + art(p.art, p.bg) + '</span><span style="display:grid;gap:4px">'
+          + meta(p) + '<h3>' + p.title + '</h3><p>' + p.caption + '</p></span></button></li>').join('') + '</ol>'
+      : '<p class="empty">이 주제에는 아직 제작 기록이 없어요.</p>';
+  }
+  feed.querySelectorAll('[data-i]').forEach(el => el.onclick = () => openPost(+el.dataset.i));
+}
+
+function openPost(i){
+  openIndex = i;
+  const p = shown[i];
+  sheet.className = 'sheet' + (p.long ? ' long' : '');
+  sheet.innerHTML =
+    '<div class="photo">' + art(p.art, p.bg) + '</div>'
+  + '<div class="text">' + meta(p)
+  + '<h2 id="sheetTitle">' + p.title + '</h2>'
+  + (p.long ? '<div class="body">' + p.body + '</div>' : '<p class="caption">' + p.caption + '</p>')
+  + '<div class="bar"><button id="prevBtn"' + (i === 0 ? ' disabled' : '') + '>← 최근</button>'
+  + '<span class="meta">' + (i + 1) + ' / ' + shown.length + '</span>'
+  + '<button id="nextBtn"' + (i === shown.length - 1 ? ' disabled' : '') + '>이전 →</button></div></div>';
+  document.getElementById('prevBtn').onclick = () => openPost(i - 1);
+  document.getElementById('nextBtn').onclick = () => openPost(i + 1);
+  overlay.hidden = false;
+  overlay.scrollTop = 0; sheet.scrollTop = 0;
+  document.getElementById('closeBtn').focus();
+}
+function closePost(){
+  overlay.hidden = true;
+  const tile = feed.querySelector('[data-i="' + openIndex + '"]');
+  if (tile) tile.focus();
+}
+document.getElementById('closeBtn').onclick = closePost;
+overlay.addEventListener('click', e => { if (e.target === overlay) closePost(); });
+document.addEventListener('keydown', e => {
+  if (overlay.hidden) return;
+  if (e.key === 'Escape') closePost();
+  if (e.key === 'ArrowRight' && openIndex < shown.length - 1) openPost(openIndex + 1);
+  if (e.key === 'ArrowLeft' && openIndex > 0) openPost(openIndex - 1);
+});
+
+// 탭 바꾸기
+const tabGrid = document.getElementById('tabGrid'), tabList = document.getElementById('tabList');
+tabGrid.onclick = () => { view = 'grid'; tabGrid.setAttribute('aria-selected', true); tabList.setAttribute('aria-selected', false); render(); };
+tabList.onclick = () => { view = 'list'; tabList.setAttribute('aria-selected', true); tabGrid.setAttribute('aria-selected', false); render(); };
+
+render();
+</script>
+</body>
+</html>
