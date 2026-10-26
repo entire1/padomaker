@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>화분이 물에 잠긴 날 · 파도메이커</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&family=IBM+Plex+Mono:wght@400&display=swap">
+<!-- 이 글은 posts 폴더 안에 있어서, 디자인 파일은 한 칸 위(../)에 있어요 -->
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<div class="page">
+  <div class="top">
+    <a class="me" href="../index.html"><span class="avatar" aria-hidden="true"><svg viewBox="0 0 120 120"><rect x="30" y="38" width="60" height="50" rx="16" fill="var(--accent)"/><circle cx="48" cy="62" r="7" fill="#fff"/><circle cx="72" cy="62" r="7" fill="#fff"/><circle cx="48" cy="62" r="3" fill="#16201f"/><circle cx="72" cy="62" r="3" fill="#16201f"/><line x1="60" y1="38" x2="60" y2="25" stroke="var(--accent)" stroke-width="4"/><circle cx="60" cy="22" r="5" fill="var(--warn)"/></svg></span>padomaker</a>
+    <nav><a href="../index.html#list">제작 기록 전체 보기</a></nav>
+  </div>
+
+  <article class="post">
+    <header>
+      <div class="meta"><time datetime="2026-09-14">2026.09.14</time><span class="tag">#센서</span><span>4분</span></div>
+      <h1>화분이 물에 잠긴 날</h1>
+    </header>
+
+    <div class="cover"><svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="200" height="200" fill="#f6e3d6"/><path d="M60 100 H140 L126 170 H74 Z" fill="var(--warn)"/><path d="M100 100 V50 M100 70 Q78 46 66 60 M100 60 Q124 30 138 46" fill="none" stroke="var(--accent)" stroke-width="9" stroke-linecap="round"/></svg></div>
+
+    <div class="body">
+      <p>여행 가는 동안 화분이 마르지 않게 자동으로 물을 주는 장치를 만들었다. 흙이 마르면 펌프가 물을 주는 단순한 구조다. 그런데 첫날 밤, 책상이 물바다가 됐다.</p>
+      <p class="meta"><span>토양 수분 센서</span><span>소형 펌프</span><span>1회 3초 급수</span></p>
+
+      <h2>무엇이 문제였나</h2>
+      <p>인터넷 예제에 있던 기준값을 그대로 썼다. "센서 값이 500보다 크면 마른 것"이라는 기준이었다. 그런데 내 센서는 물에 흠뻑 젖어도 값이 520이 나왔다. 장치는 흙이 계속 말라 있다고 생각하고 물을 멈추지 않았다.</p>
+
+      <h2>직접 재 보기</h2>
+      <p>예제를 믿지 말고 내 센서로 직접 재 보기로 했다. 같은 흙을 세 가지 상태로 만들어서 값을 적었다.</p>
+      <ul>
+        <li>바짝 마른 흙: 약 <code>780</code></li>
+        <li>적당히 촉촉한 흙: 약 <code>610</code></li>
+        <li>물에 흠뻑 젖은 흙: 약 <code>520</code></li>
+      </ul>
+      <p>그래서 기준을 <code>700</code>으로 바꿨다. 이보다 크면 물을 주고, 한 번 준 뒤에는 30분 동안 다시 주지 않게 했다. 흙에 물이 퍼질 시간이 필요하기 때문이다.</p>
+
+      <p class="note"><b>배운 점</b> · 센서마다, 흙마다 값이 다르다. 남의 숫자를 가져다 쓰기 전에 내 환경에서 직접 재 봐야 한다.</p>
+    </div>
+  </article>
+
+  <nav class="pager" aria-label="다른 글">
+    <a href="phone-stand.html"><span>← 지난 글</span><b>휴대폰 거치대, 네 번 만에 성공</b></a>
+    <a class="next" href="github-pages.html"><span>다음 글 →</span><b>내 홈페이지가 인터넷에 올라간 날</b></a>
+  </nav>
+
+  <footer>© 2026 파도메이커 · 실명, 학교, 얼굴 사진 없이 만든 수업용 예시</footer>
+</div>
+</body>
+</html>

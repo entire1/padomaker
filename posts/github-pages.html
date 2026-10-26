@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>내 홈페이지가 인터넷에 올라간 날 · 파도메이커</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&family=IBM+Plex+Mono:wght@400&display=swap">
+<!-- 이 글은 posts 폴더 안에 있어서, 디자인 파일은 한 칸 위(../)에 있어요 -->
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<div class="page">
+  <div class="top">
+    <a class="me" href="../index.html"><span class="avatar" aria-hidden="true"><svg viewBox="0 0 120 120"><rect x="30" y="38" width="60" height="50" rx="16" fill="var(--accent)"/><circle cx="48" cy="62" r="7" fill="#fff"/><circle cx="72" cy="62" r="7" fill="#fff"/><circle cx="48" cy="62" r="3" fill="#16201f"/><circle cx="72" cy="62" r="3" fill="#16201f"/><line x1="60" y1="38" x2="60" y2="25" stroke="var(--accent)" stroke-width="4"/><circle cx="60" cy="22" r="5" fill="var(--warn)"/></svg></span>padomaker</a>
+    <nav><a href="../index.html#list">제작 기록 전체 보기</a></nav>
+  </div>
+
+  <article class="post">
+    <header>
+      <div class="meta"><time datetime="2026-10-20">2026.10.20</time><span class="tag">#웹</span><span>3분</span></div>
+      <h1>내 홈페이지가 인터넷에 올라간 날</h1>
+    </header>
+
+    <div class="cover"><svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="200" height="200" fill="var(--soft)"/><rect x="30" y="40" width="140" height="110" rx="12" fill="none" stroke="var(--accent)" stroke-width="9"/><path d="M78 80 L60 95 L78 110 M122 80 L140 95 L122 110" fill="none" stroke="var(--accent)" stroke-width="9" stroke-linecap="round"/></svg></div>
+
+    <div class="body">
+      <p>수업 시간에 제미나이와 함께 만든 홈페이지를 깃허브 페이지로 올렸다. 이제 친구 폰에서도 내 주소를 치면 내 페이지가 열린다. 그런데 처음 10분 동안은 404 화면만 봤다.</p>
+
+      <h2>올린 순서</h2>
+      <ol>
+        <li>깃허브 가입 (실명 대신 닉네임으로 아이디를 정했다)</li>
+        <li><code>아이디.github.io</code> 이름으로 저장소 만들기</li>
+        <li>홈페이지 파일 올리기</li>
+        <li>Settings → Pages에서 공개 켜기</li>
+      </ol>
+
+      <h2>404의 범인</h2>
+      <p>기다려도 계속 404가 떠서 "막혔을 때 확인할 것" 표를 봤다. 첫 줄에 답이 있었다. 내 파일 이름이 <code>내홈페이지.html</code>이었다. 웹사이트는 주소로 들어오면 <code>index.html</code>을 먼저 찾는다. 이름을 바꿔서 다시 올리니 바로 열렸다.</p>
+
+      <h2>내가 직접 고친 곳</h2>
+      <p>제미나이가 처음 만들어 준 페이지는 보라색 그라데이션에 "열정 가득한 학생입니다" 같은 문장이 있었다. 나 같지 않아서 색을 바다색으로 바꾸고, 문장은 전부 내가 다시 썼다. 세어 보니 23군데였다.</p>
+
+      <p class="note"><b>배운 점</b> · AI가 만든 첫 결과물은 출발점일 뿐이다. 내 홈페이지처럼 보이게 만드는 건 내가 고친 23군데였다.</p>
+    </div>
+  </article>
+
+  <nav class="pager" aria-label="다른 글">
+    <a href="plant-pot.html"><span>← 지난 글</span><b>화분이 물에 잠긴 날</b></a>
+  </nav>
+
+  <footer>© 2026 파도메이커 · 실명, 학교, 얼굴 사진 없이 만든 수업용 예시</footer>
+</div>
+</body>
+</html>

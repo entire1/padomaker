@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>파도메이커</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&family=IBM+Plex+Mono:wght@400&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="page">
+  <!-- 프로필: 이름, 숫자, 소개 -->
+  <section class="profile">
+    <div class="avatar" aria-hidden="true">
+      <svg viewBox="0 0 120 120">
+        <rect x="30" y="38" width="60" height="50" rx="16" fill="var(--accent)"/>
+        <circle cx="48" cy="62" r="7" fill="#fff"/><circle cx="72" cy="62" r="7" fill="#fff"/>
+        <circle cx="48" cy="62" r="3" fill="#16201f"/><circle cx="72" cy="62" r="3" fill="#16201f"/>
+        <path d="M50 77 Q60 84 70 77" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+        <line x1="60" y1="38" x2="60" y2="25" stroke="var(--accent)" stroke-width="4"/>
+        <circle cx="60" cy="22" r="5" fill="var(--warn)"/>
+      </svg>
+    </div>
+    <div class="who">
+      <h1>padomaker</h1>
+      <div class="stats">
+        <span><b id="countAll">0</b> 게시물</span>
+        <span><b id="countLong">0</b> 제작 기록</span>
+        <span><b>2026</b> 시작</span>
+      </div>
+    </div>
+    <p class="bio"><b>파도메이커</b><br>만들고, 부수고, 다시 만드는 중학생 메이커<br><span>사진은 짧게, 과정은 길게 남겨요</span></p>
+  </section>
+
+  <!-- 하이라이트: posts.js의 tag를 보고 자동으로 만들어져요 -->
+  <nav class="highlights" id="highlights" aria-label="주제별 보기"></nav>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" id="tabGrid">▦ 피드</button>
+    <button class="tab" role="tab" id="tabList">≡ 제작 기록</button>
+    <button class="tab" role="tab" id="tabAbout">◎ 소개</button>
+  </div>
+
+  <!-- 피드와 제작 기록이 그려지는 자리 -->
+  <section id="feed" aria-live="polite"></section>
+
+  <!-- 소개: 직접 고쳐 쓰는 곳 -->
+  <section id="about" class="about" hidden>
+    <div style="display:grid;gap:10px">
+      <h2>안녕하세요, 파도메이커예요</h2>
+      <p>바닷가 마을에 사는 중학교 3학년이에요. 쉬는 시간마다 노트에 물건 설계도를 그리고, 고장 난 건 일단 분해해 봐요. 완성 사진만 보면 쉬워 보이지만, 사실 대부분 서너 번은 실패해요. 그 과정을 남기려고 이 홈페이지를 만들었어요.</p>
+    </div>
+    <div class="skills">
+      <div><b>설계</b><ul><li>틴커캐드 모델링</li><li>치수 재고 그리기</li></ul></div>
+      <div><b>제작</b><ul><li>3D 프린터 출력 설정</li><li>서포트 없이 설계하기</li></ul></div>
+      <div><b>코딩</b><ul><li>HTML·CSS 수정</li><li>센서 값 읽기</li></ul></div>
+    </div>
+    <div style="display:grid;gap:10px">
+      <h2>다른 곳에서도 만나요</h2>
+      <div class="links">
+        <a href="https://www.instagram.com/" target="_blank" rel="noopener">인스타그램</a>
+        <a href="https://github.com/" target="_blank" rel="noopener">깃허브</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>© 2026 파도메이커 · 실명, 학교, 얼굴 사진 없이 만든 수업용 예시</footer>
+</div>
+
+<!-- 짧은 게시물을 눌렀을 때 뜨는 창 -->
+<div class="overlay" id="overlay" hidden>
+  <button class="close" id="closeBtn" aria-label="닫기">×</button>
+  <article class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"></article>
+</div>
+
+<script src="posts.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
