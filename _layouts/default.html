@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!--
+  모든 페이지가 같이 쓰는 틀이에요.
+  메뉴와 꼬리말은 여기 한 번만 적으면 모든 페이지에 나타나요.
+  {{ content }} 자리에 각 페이지의 내용이 들어가요.
+-->
+<html lang="{{ site.lang }}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}</title>
+<meta name="description" content="{{ page.summary | default: site.description }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&family=IBM+Plex+Mono:wght@400&display=swap">
+<!-- relative_url 이 폴더 위치를 알아서 맞춰 줘요. ../ 를 신경 쓸 필요가 없어요 -->
+<link rel="stylesheet" href="{{ '/style.css' | relative_url }}">
+</head>
+<body>
+<div class="page">
+  <div class="top">
+    <a class="logo" href="{{ '/' | relative_url }}">
+      <svg viewBox="0 0 44 20" aria-hidden="true"><path d="M2 12 Q8 2 14 12 T26 12 T38 12" fill="none" stroke="var(--accent)" stroke-width="3.5" stroke-linecap="round"/></svg>
+      {{ site.title }}
+    </a>
+    <nav>
+      {% if page.layout == "post" %}
+        <a href="{{ '/' | relative_url }}">← 글 목록</a>
+      {% else %}
+        <a href="{{ '/' | relative_url }}" aria-current="page">글 목록</a><a href="#about">소개</a>
+      {% endif %}
+    </nav>
+  </div>
+
+  {{ content }}
+
+  <footer>© {{ site.time | date: "%Y" }} {{ site.author }} · 실명, 학교, 얼굴 사진 없이 만든 수업용 예시</footer>
+</div>
+</body>
+</html>

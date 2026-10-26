@@ -98,3 +98,8 @@ footer{font-size:14px; color:var(--muted); border-top:1px solid var(--line); pad
   .pager{grid-template-columns:1fr}
   .pager .next{grid-column:1}
 }
+
+/* 마크다운의 > 인용문을 "배운 점" 상자로 보여줘요 (지킬 버전에서 추가) */
+.body blockquote{margin:0; background:var(--card); border:1px solid var(--line); border-left:4px solid var(--accent);
+  border-radius:8px; padding:14px 18px}
+.body blockquote p{margin:0}
